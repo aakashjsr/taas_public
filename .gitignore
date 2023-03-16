@@ -1,0 +1,5 @@
+.idea/
+*.pyc
+mydatabase
+*.sqlite3
+*.log

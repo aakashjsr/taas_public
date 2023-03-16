@@ -1,0 +1,29 @@
+version: '3'
+
+volumes:
+    taas_logs:
+    taas_postgres_data:
+
+services:
+  db:
+    image: postgres:12.0-alpine
+    volumes:
+      - taas_postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_USER: "taas"
+      POSTGRES_PASSWORD: "taas"
+      POSTGRES_DB: "taas"
+
+  web:
+    restart: always
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+    env_file: ./env_files/django.env
+    depends_on:
+      - db
+    volumes:
+      - "/tmp/static:/opt/static"
+      - taas_logs:/opt/logs/
+      - ./:/opt/
